@@ -6,7 +6,7 @@ const {
     INSERT_ANSWER,
     GET_QUESTION_WITH_ANSWERS,
     DELETE_ANSWER_BY_ID
-} = require("../controllers/tickets");
+} = require("../controllers/answers");
 
 
 router.post("/question/:id/answer", authMiddleware, INSERT_ANSWER);

@@ -6,7 +6,7 @@ const {
     INSERT_QUESTION,
     GET_ALL_QUESTIONS,
     DELETE_QUESTION_BY_ID
-} = require("../controllers/tickets");
+} = require("../controllers/questions");
 
 
 router.post("/question", authMiddleware, INSERT_QUESTION);
