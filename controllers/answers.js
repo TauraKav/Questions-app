@@ -1,41 +1,26 @@
 const uniqid = require("uniqid");
 const answerModel = require("../models/answer");
+const questionModel = require("../models/question");
 
-module.exports.INSERT_QUESTION = async (req, res) => {
-    try {
-        const question = new questionModel({
-            id: uniqid(),
-            title: req.body.title,
-            text: req.body.text,
-            answers_ids: [],
-        });
+module.exports.INSERT_ANSWER = async (req, res) => {
+  try {
+    const answer = new answerModel({
+      id: uniqid(),
+      text: req.body.text,
+      gained_likes_number: 0
 
-        await question.save();
+    });
+    const createdAnswer = await answer.save();
 
-        return res.status(200).json({ response: "Question was created" });
-    } catch (err) {
-        console.log("err", err);
-        return res.status(500).json({ response: "ERROR" });
-    }
+  questionModel.updateOne(
+      { id: req.body.id },
+      { $push: { answers_ids: createdAnswer.id } }
+    ).exec();
+    
+    return res.status(200).json({ response: "Answer was added" });
+
+  } catch (err) {
+    console.log("err", err);
+    return res.status(500).json({ response: "ERROR" });
+  }
 };
-
-module.exports.GET_ALL_QUESTIONS = async (req, res) => {
-    try {
-      const questions = await questionModel.find();
-      
-      res.status(200).json({ questions: questions });
-    } catch (err) {
-      console.log("ERR", err);
-      res.status(500).json({ response: "ERROR, please try later" });
-    }
-  };
-
-  module.exports.DELETE_QUESTION_BY_ID = async (req, res) => {
-    try { 
-    await questionModel.deleteOne({ _id: req.params.id })
-        res.status(200).json({ response: "Question was deleted"});
-      } catch (err)  {
-        console.log("err", err);
-        res.status(500).json({ response: "Err in DB" });
-      };
-  };
