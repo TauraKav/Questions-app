@@ -57,3 +57,28 @@ module.exports.DELETE_ANSWER_BY_ID = async (req, res) => {
     };
 };
 
+module.exports.EDIT_ANSWER_LIKES = async (req, res) => {
+  try {
+    const answer = await answerModel.findOne({ id: req.params.id });
+    let likes = answer.gained_likes_number;
+    if(req.body.gained_likes > 0)
+    {
+      likes = likes +1;
+    }
+    else
+    {
+      likes = likes -1;
+    }
+  
+    const updateResponse = await answerModel.findOneAndUpdate(
+      { id: req.params.id },
+      { gained_likes_number: likes}
+    );
+
+    res.status(200).json({ tasks: updateResponse });
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json({ response: "Err in DB" });
+  }
+};
+
