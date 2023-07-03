@@ -47,4 +47,13 @@ module.exports.GET_QUESTION_WITH_ANSWERS = async (req, res) => {
   }
 };
 
+module.exports.DELETE_ANSWER_BY_ID = async (req, res) => {
+  try { 
+  await answerModel.deleteOne({ id: req.params.id })
+      res.status(200).json({ response: "Answer was deleted"});
+    } catch (err)  {
+      console.log("err", err);
+      res.status(500).json({ response: "Err in DB" });
+    };
+};
 

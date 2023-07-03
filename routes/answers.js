@@ -11,7 +11,7 @@ const {
 
 router.post("/question/:id/answer", authMiddleware, INSERT_ANSWER);
 router.get("/question/:id/answers", GET_QUESTION_WITH_ANSWERS);
-// router.delete("/answer/:id", authMiddleware, DELETE_ANSWER_BY_ID);
+router.delete("/answer/:id", authMiddleware, DELETE_ANSWER_BY_ID);
 
 
 module.exports = router;
