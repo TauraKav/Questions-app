@@ -3,7 +3,7 @@ const userModel = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-module.exports.REGISTER = async (req, res) => {
+module.exports.SIGNUP = async (req, res) => {
     try {
 if ( req.body.email.includes('@') && /\d/.test(req.body.password) && req.body.password.length >= 6 ) {
     bcrypt.genSalt(10, (err, salt) => {
@@ -55,7 +55,7 @@ if ( req.body.email.includes('@') && /\d/.test(req.body.password) && req.body.pa
           const token = jwt.sign(
             {
               email: user.email,
-              userId: user.id,
+             id: user.id,
             },
             process.env.JWT_SECRET,
             { expiresIn: "2h" },
@@ -64,7 +64,7 @@ if ( req.body.email.includes('@') && /\d/.test(req.body.password) && req.body.pa
             }
           );
 
-          return res.status(200).json({ response: "You logged in", token, userId: user.id });
+          return res.status(200).json({ response: "You logged in", token, id: user.id });
         } else {
           return res.status(404).json({ response: "Bad data" });
         }

@@ -1,5 +1,6 @@
 const uniqid = require("uniqid");
 const questionModel = require("../models/question");
+const userModel = require("../models/user");
 
 module.exports.INSERT_QUESTION = async (req, res) => {
     try {
@@ -10,7 +11,12 @@ module.exports.INSERT_QUESTION = async (req, res) => {
             answers_ids: [],
         });
 
-        await question.save();
+        const createdQuestion = await question.save();
+console.log (req.body.id);
+  userModel.updateOne(
+      { id: req.body.id},
+      { $push: { asked_questions_ids: createdQuestion.id } }
+    ).exec();
 
         return res.status(200).json({ response: "Question was created" });
     } catch (err) {
